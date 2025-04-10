@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+rank_bm25
+nltk
+sentence-transformers
+torch

@@ -1,0 +1,42 @@
+<!-- static/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Legal AI Bot</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 8px; font-size: 16px; }
+    #results { margin-top: 20px; }
+    .card { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Ask Legal AI Bot</h2>
+  <input id="queryInput" type="text" placeholder="Enter your legal query..." size="50">
+  <button onclick="askBot()">Ask</button>
+
+  <div id="results"></div>
+
+  <script>
+    async function askBot() {
+      const query = document.getElementById("queryInput").value;
+      const res = await fetch(`/ask?query=${encodeURIComponent(query)}`);
+      const data = await res.json();
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = '';
+
+      data.answers.forEach(ans => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <strong>${ans.title || 'No Title'} (${ans.source} - Section ${ans.section})</strong><br>
+          <p>${ans.text}</p>
+        `;
+        resultsDiv.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
